@@ -161,7 +161,7 @@ class ServerBanner extends PureComponent {
                     option.trim() !== "" && (
                       <li key={optionIndex} style={{ marginLeft: "1.3rem", marginBottom: "0.3rem"}}>
                         {JSON.stringify(option.checked)}
-                        <label style={{display: "flex", alignItems: "center"}}>
+                        <label style={{display: "flex", alignItems: "center", gap:"0.3rem"}}>
                           <input
                             type="checkbox"
                             className="side_bar_custom-checkbox"

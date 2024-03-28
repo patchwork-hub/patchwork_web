@@ -7871,32 +7871,32 @@ noscript {
       flex: 1 1 auto;
     }
 
-    .server-settings-style{
-      .side_bar_custom-checkbox {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background: darken($ui-base-color, 8%);
-        background: lighten($ui-base-color, 8%);
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        cursor: pointer;
-        position: relative;
-      }
+    // .server-settings-style{
+    //   .side_bar_custom-checkbox {
+    //     appearance: none;
+    //     -webkit-appearance: none;
+    //     -moz-appearance: none;
+    //     background: darken($ui-base-color, 8%);
+    //     background: lighten($ui-base-color, 8%);
+    //     width: 15px;
+    //     height: 15px;
+    //     border-radius: 50%;
+    //     cursor: pointer;
+    //     position: relative;
+    //   }
       
-      .side_bar_custom-checkbox:checked:after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background: $highlight-text-color;
-      }
-    }
+    //   .side_bar_custom-checkbox:checked:after {
+    //     content: "";
+    //     position: absolute;
+    //     top: 50%;
+    //     left: 50%;
+    //     transform: translate(-50%, -50%);
+    //     width: 15px;
+    //     height: 15px;
+    //     border-radius: 50%;
+    //     background: $highlight-text-color;
+    //   }
+    // }
   }
 
   &__bio {
@@ -8765,6 +8765,30 @@ noscript {
 }
 
 .server-banner {
+  .side_bar_custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: 1px solid #c7c5ce;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .side_bar_custom-checkbox:checked:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: $highlight-text-color;
+  }
   padding: 20px 0;
 
   &__introduction {
@@ -9692,7 +9716,9 @@ noscript {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: rgb(199, 197, 206);
+    // background-color: rgb(199, 197, 206);
+    background: transparent;
+    border: 1px solid #c7c5ce;
     width: 15px;
     height: 15px;
     border-radius: 50%;
@@ -9709,7 +9735,7 @@ noscript {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background: lighten($color: #8c8dff, $amount: 0%);
+    background: $highlight-text-color;
   }
   
   .label {
