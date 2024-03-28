@@ -7870,6 +7870,33 @@ noscript {
     .spacer {
       flex: 1 1 auto;
     }
+
+    .server-settings-style{
+      .side_bar_custom-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: darken($ui-base-color, 8%);
+        background: lighten($ui-base-color, 8%);
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+      }
+      
+      .side_bar_custom-checkbox:checked:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: $highlight-text-color;
+      }
+    }
   }
 
   &__bio {
@@ -9633,6 +9660,79 @@ noscript {
         text-overflow: ellipsis;
       }
     }
+  }
+
+  .number {
+    background: lighten($ui-base-color, 8%);
+    background: darken(#8c8dff, 0%);
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    margin-right: 5px;
+    text-align: center;
+    width: 2rem;
+    height: 2rem;
+    font-size: 15px;
+    line-height: 22px;
+    color: lighten($color: #d9e1e8, $amount: 0);
+    color: darken($color: #282c37, $amount: 0);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .list {
+    list-style-type: none;
+    accent-color: lighten($color: #8c8dff, $amount: 0%);
+    margin-left: 2.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: rgb(199, 197, 206);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .custom-checkbox:checked:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: lighten($color: #8c8dff, $amount: 0%);
+  }
+  
+  .label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .label input[type="checkbox"] {
+    margin-right: 8px;
+  }
+  
+  .h4 {
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .category {
+    // border-bottom: 1px solid hsl(208, 24.5901639344%, 80.0392156863%);
+    margin-bottom: 1rem;
+  }
+  .border-bottom-line{
+    border-bottom: 1px solid hsl(208, 24.5901639344%, 80.0392156863%);
   }
 }
 
