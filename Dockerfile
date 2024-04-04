@@ -241,7 +241,7 @@ COPY --from=precompiler /opt/mastodon/public/assets /opt/mastodon/public/assets
 # Copy bundler components to layer
 COPY --from=bundler /usr/local/bundle/ /usr/local/bundle/
 COPY --from=node /usr/local/bin/node /usr/local/bin/
-COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+# COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 RUN \
 # Precompile bootsnap code for faster Rails startup
