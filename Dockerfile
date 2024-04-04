@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+#  syntax=docker/dockerfile:1.4
 # This needs to be bookworm-slim because the Ruby image is built on bookworm-slim
 ARG NODE_VERSION="20.6-bookworm-slim"
 
@@ -28,18 +28,20 @@ RUN apt-get update && \
         libgdbm-dev \
         libgmp-dev \
         libssl-dev \
-        libyaml-0-2 \
+        # libyaml-0-2 \
+        libyaml-dev\
+        libcurl4-openssl-dev \
         ca-certificates \
         libreadline8 \
         python3 \
         shared-mime-info && \
+        bundle lock --update json-canonicalization && \
     bundle config set --local deployment 'true' && \
     bundle config set --local without 'development test' && \
     bundle config set silence_root_warning true && \
     bundle install -j"$(nproc)" && \
-    yarn install --pure-lockfile --production --network-timeout 600000 && \
-    yarn cache clean
-
+    yarn install --pure-lockfile --production --network-timeout 600000
+    
 FROM node:${NODE_VERSION}
 
 # Use those args to specify your own version flags & suffixes
@@ -72,7 +74,9 @@ RUN apt-get update && \
         libjemalloc2 \
         libicu72 \
         libidn12 \
-        libyaml-0-2 \
+        # libyaml-0-2 \
+        libyaml-dev\
+        libcurl4-openssl-dev \
         file \
         ca-certificates \
         tzdata \
@@ -98,7 +102,8 @@ USER mastodon
 WORKDIR /opt/mastodon
 
 # Precompile assets
-RUN OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile
+RUN OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile && \
+    yarn cache clean
 
 # Set the work dir and the container entry point
 ENTRYPOINT ["/usr/bin/tini", "--"]
