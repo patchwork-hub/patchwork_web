@@ -414,6 +414,11 @@ class Status < ApplicationRecord
     end
   end
 
+  def search_word_ban(keyword)
+    regex = /(?:^|\s)#{Regexp.escape(keyword)}(?:\s|[#,.]|(?=\z))/i 
+    !!(text =~ regex)
+  end
+
   private
 
   def update_status_stat!(attrs)

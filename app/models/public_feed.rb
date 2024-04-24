@@ -28,7 +28,7 @@ class PublicFeed
     scope.merge!(account_filters_scope) if account?
     scope.merge!(media_only_scope) if media_only?
     scope.merge!(language_scope) if account&.chosen_languages.present?
-
+    scope.merge!(keyword_filters_scope) if server_setting?
     scope.cache_ids.to_a_paginated_by_id(limit, max_id: max_id, since_id: since_id, min_id: min_id)
   end
 
@@ -58,6 +58,12 @@ class PublicFeed
 
   def media_only?
     options[:only_media]
+  end
+
+  def server_setting?
+    content_filters = ServerSetting.where(name: "Content filters").last
+    return false unless content_filters
+    content_filters.value
   end
 
   def public_scope
@@ -93,4 +99,24 @@ class PublicFeed
       scope.merge!(Status.not_domain_blocked_by_account(account)) unless local_only?
     end
   end
+
+  def keyword_filters_scope
+    banned_keyword_status_ids = []
+
+    Status.order(created_at: :desc).limit(400).each do |status|
+      KeywordFilter.all.each do |keyword_filter|
+
+        if keyword_filter.is_filter_hashtag
+          keyword = keyword_filter.keyword.downcase
+          tag = Tag.find_by(name: keyword.gsub('#', ''))
+          banned_keyword_status_ids << tag.statuses.ids if tag
+        else
+          banned_keyword_status_ids << status.id if status.search_word_ban(keyword_filter.keyword)
+        end
+
+      end
+    end
+    Status.where.not(id: banned_keyword_status_ids)
+  end
+
 end
