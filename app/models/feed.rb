@@ -28,10 +28,48 @@ class Feed
       unhydrated = redis.zrangebyscore(key, "(#{min_id}", "(#{max_id}", limit: [0, limit], with_scores: true).map { |id| id.first.to_i }
     end
 
-    Status.where(id: unhydrated).cache_ids
+    # start::original code
+    # Status.where(id: unhydrated).cache_ids
+    # end::original code
+
+    # start::mkk edited code
+    banned_ids = []
+    if server_setting?
+      banned_ids = keyword_filters_scope
+    end
+
+    statuses = Status.where(id: unhydrated)
+    statuses = statuses.where.not(id: banned_ids) if banned_ids.any?
+    statuses.cache_ids
+    # end::mkk edited code
+
   end
 
   def key
     FeedManager.instance.key(@type, @id)
+  end
+
+  def server_setting?
+    content_filters = ServerSetting.where(name: "Content filters").last
+    return false unless content_filters
+    content_filters.value
+  end
+
+  def keyword_filters_scope
+    banned_keyword_status_ids = []
+
+    Status.order(created_at: :desc).limit(400).each do |status|
+      KeywordFilter.all.each do |keyword_filter|
+
+        if keyword_filter.is_filter_hashtag
+          keyword = keyword_filter.keyword.downcase
+          tag = Tag.find_by(name: keyword.gsub('#', ''))
+          banned_keyword_status_ids << tag.statuses.ids if tag
+        else
+          banned_keyword_status_ids << status.id if status.search_word_ban(keyword_filter.keyword)
+        end
+
+      end
+    end
   end
 end
