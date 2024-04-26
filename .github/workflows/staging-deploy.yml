@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - staging
 
 permissions:
   contents: read
@@ -53,31 +53,31 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.REPOSITORY }}
-          IMAGE_TAG: ${{ vars.IMAGE_TAG }}
+          IMAGE_TAG: ${{ vars.IMAGE_STAGING_TAG }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-  deploy:
-    name: Deploy Server
-    needs: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git Checkout
-        uses: actions/checkout@v2
-      - name: Echo Branch
-        run: echo running on branch ${GITHUB_REF##*/}
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.PROD_SERVER_IP }}
-          username: ${{ secrets.PROD_SERVER_USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
-          script: |
-            eval "$(ssh-agent -s)"
-            ssh-add ~/.ssh/patchwork_github-actions
-            cd /home/ubuntu/devops
-            ansible-playbook alldeploy.yml -e "@patchwork_web.json"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_STAGING_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_STAGING_TAG
+  # deploy:
+  #   name: Deploy Server
+  #   needs: Build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Git Checkout
+  #       uses: actions/checkout@v2
+  #     - name: Echo Branch
+  #       run: echo running on branch ${GITHUB_REF##*/}
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
+  #     - name: Deploy to server
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.PROD_SERVER_IP }}
+  #         username: ${{ secrets.PROD_SERVER_USERNAME }}
+  #         port: ${{ secrets.PORT }}
+  #         key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+  #         script: |
+  #           eval "$(ssh-agent -s)"
+  #           ssh-add ~/.ssh/patchwork_github-actions
+  #           cd /home/ubuntu/devops
+  #           ansible-playbook alldeploy.yml -e "@patchwork_web.json"
