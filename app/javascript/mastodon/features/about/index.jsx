@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
+import { withRouter } from 'react-router-dom';
+
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
@@ -28,6 +30,7 @@ const messages = defineMessages({
   silencedExplanation: { id: 'about.domain_blocks.silenced.explanation', defaultMessage: 'You will generally not see profiles and content from this server, unless you explicitly look it up or opt into it by following.' },
   suspended: { id: 'about.domain_blocks.suspended.title', defaultMessage: 'Suspended' },
   suspendedExplanation: { id: 'about.domain_blocks.suspended.explanation', defaultMessage: 'No data from this server will be processed, stored or exchanged, making any interaction or communication with users from this server impossible.' },
+  serverSetting: { id: 'about.setting', defaultMessage: 'Server Settings' },
 });
 
 const severityMessages = {
@@ -47,6 +50,21 @@ const mapStateToProps = state => ({
   extendedDescription: state.getIn(['server', 'extendedDescription']),
   domainBlocks: state.getIn(['server', 'domainBlocks']),
 });
+
+const settingsData = {
+  "Spam Block": ["Spam filters", "Sign up challenge"],
+  "Content Moderation": ["Content filters", "Live blocklist"],
+  "Federation": ["Bluesky", "Threads"],
+  "Local Features": [
+    "Custom theme",
+    "Search opt-out",
+    "Local only posts",
+    "Long posts and Markdown",
+    "Local quote posts"
+  ],
+  "User Management": ["Guest Accounts", "e-Newsletters", "Analytics"],
+  "Plug-ins": []
+};
 
 class Section extends PureComponent {
 
@@ -88,7 +106,22 @@ class Section extends PureComponent {
 }
 
 class About extends PureComponent {
-
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      checkedOptions: Object.entries(settingsData).reduce((acc, [category, options]) => {
+        acc[category] = options.reduce((optsAcc, option) => {
+          optsAcc[option] = option !== "Local only posts" && option !== "Live blocklist" && option !== "Analytics" && option !== "Threads";
+          return optsAcc;
+        }, {});
+        return acc;
+      }, {}),
+    };
+  
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+  }
+  
   static propTypes = {
     server: ImmutablePropTypes.map,
     extendedDescription: ImmutablePropTypes.map,
@@ -107,6 +140,18 @@ class About extends PureComponent {
     dispatch(fetchServer());
     dispatch(fetchExtendedDescription());
   }
+  
+  handleCheckboxChange(category, option) {
+    this.setState(prevState => ({
+      checkedOptions: {
+        ...prevState.checkedOptions,
+        [category]: {
+          ...prevState.checkedOptions[category],
+          [option]: !prevState.checkedOptions[category][option],
+        },
+      },
+    }));
+  }
 
   handleDomainBlocksOpen = () => {
     const { dispatch } = this.props;
@@ -116,6 +161,8 @@ class About extends PureComponent {
   render () {
     const { multiColumn, intl, server, extendedDescription, domainBlocks } = this.props;
     const isLoading = server.get('isLoading');
+    const { state } = this.props.location;
+    const fromSidebar = state?.fromSidebar;
 
     return (
       <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
@@ -142,7 +189,7 @@ class About extends PureComponent {
             </div>
           </div>
 
-          <Section open title={intl.formatMessage(messages.title)}>
+          <Section open={fromSidebar?false:true} title={intl.formatMessage(messages.title)}>
             {extendedDescription.get('isLoading') ? (
               <>
                 <Skeleton width='100%' />
@@ -175,6 +222,34 @@ class About extends PureComponent {
                   </li>
                 ))}
               </ol>
+            ))}
+          </Section>
+
+          <Section open={fromSidebar??false} title={intl.formatMessage(messages.serverSetting)}>
+            {Object.entries(settingsData).map(([category, options], index) => (
+              <div key={category} className={`category ${Object.keys(settingsData).length - 1 == index ? "" : "border-bottom-line"}`} >
+                <h4 className="h4">
+                  <span className='number'> {index + 1} </span> {category}
+                </h4>
+
+                <ul>
+                  {options.map((option, index) => (
+                    option.trim() !== "" && (
+                      <li key={index} className="list">
+                        <label className="label">
+                          <input
+                            type="checkbox"
+                            className="custom-checkbox"
+                            checked={this.state.checkedOptions[category][option]}
+                            onChange={() => this.handleCheckboxChange(category, option)}
+                          />
+                          {option}
+                        </label>
+                      </li>
+                    )
+                  ))}
+                </ul>
+              </div>
             ))}
           </Section>
 
@@ -226,4 +301,4 @@ class About extends PureComponent {
 
 }
 
-export default connect(mapStateToProps)(injectIntl(About));
+export default connect(mapStateToProps)(injectIntl(withRouter(About)));

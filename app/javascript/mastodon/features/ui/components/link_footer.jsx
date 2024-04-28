@@ -90,6 +90,18 @@ class LinkFooter extends PureComponent {
         </p>
 
         <p>
+          <strong>Patchwork</strong>:
+          {' '}
+          <a href='https://patchwork.online/about' target='_blank'><FormattedMessage id='footer.about' defaultMessage='About' /></a>
+          {DividingCircle}
+          <a href='https://joinmastodon.org/apps' target='_blank'><FormattedMessage id='footer.get_app' defaultMessage='Get the app' /></a>
+          {DividingCircle}
+          <a href='https://github.com/newsmast22/patchwork_web.git' rel='noopener noreferrer' target='_blank'><FormattedMessage id='footer.source_code' defaultMessage='View source code' /></a>
+          {DividingCircle}
+          <span className='version'>v1.0.0</span>
+        </p>
+
+        <p>
           <strong>Mastodon</strong>:
           {' '}
           <a href='https://joinmastodon.org' target='_blank'><FormattedMessage id='footer.about' defaultMessage='About' /></a>
