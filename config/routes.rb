@@ -16,6 +16,9 @@ def redirect_with_vary(path)
 end
 
 Rails.application.routes.draw do
+  get 'user_server_settings/index'
+  post 'user_server_settings/customize_setting'
+
   # Paths of routes on the web app that to not require to be indexed or
   # have alternative format representations requiring separate controllers
   web_app_paths = %w(
