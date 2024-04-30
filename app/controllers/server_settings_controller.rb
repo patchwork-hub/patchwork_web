@@ -2,7 +2,7 @@
 
 class ServerSettingsController < ApplicationController
   def index
-    server_settings = Patchwork::ServerSetting.where(parent_id: nil).includes(:children)
+    server_settings = Patchwork::ServerSetting.where(parent_id: nil).includes(:children).order(:id)
 
     # user_settings = current_user ? Patchwork::UserServerSetting.where(user_id: current_user.id) : []
 
