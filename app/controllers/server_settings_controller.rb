@@ -18,22 +18,21 @@ class ServerSettingsController < ApplicationController
     #   end
     # end
 
-    # server_setting_data = {}
+    server_setting_data = {}
 
-    # server_settings.each do |server_setting|
-    #   category = server_setting.name
-    #   server_setting_data[category] ||= {}
+    server_settings.each do |server_setting|
+      category = server_setting.name
+      server_setting_data[category] ||= {}
 
-    #   server_setting.children.each do |child_setting|
-    #     server_setting_data[category][child_setting.name] = child_setting.value
-    #   end
-    # end
+      server_setting.children.each do |child_setting|
+        server_setting_data[category][child_setting.name] = child_setting.value
+      end
+    end
 
     # Respond with JSON
     respond_to do |format|
       format.json do
-        # render json: server_setting_data, content_type: 'application/activity+json'
-        render json: server_settings.to_json(include: :children), content_type: 'application/activity+json'
+        render json: server_setting_data, content_type: 'application/activity+json'
       end
     end
   end
