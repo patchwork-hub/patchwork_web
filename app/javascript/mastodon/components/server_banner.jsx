@@ -31,7 +31,7 @@ class ServerBanner extends PureComponent {
     };
 
     this.handleItemClick = this.handleItemClick.bind(this);
-    this.toggleCheckbox = this.toggleCheckbox.bind(this);
+    // this.toggleCheckbox = this.toggleCheckbox.bind(this);
   }
 
   static propTypes = {
@@ -44,7 +44,7 @@ class ServerBanner extends PureComponent {
     const { dispatch } = this.props;
     dispatch(fetchServer());
 
-    axios.get('/user_server_settings/index', {
+    axios.get('/server_settings/index', {
       headers: {
         'Accept': 'application/json',
       }
@@ -63,13 +63,13 @@ class ServerBanner extends PureComponent {
     }));
   }
 
-  toggleCheckbox(category, option) {
-    this.setState(prevState => {
-      const newSettings = { ...prevState.serverSettings };
-      newSettings[category][option] = !newSettings[category][option];
-      return { serverSettings: newSettings };
-    });
-  }
+  // toggleCheckbox(category, option) {
+  //   this.setState(prevState => {
+  //     const newSettings = { ...prevState.serverSettings };
+  //     newSettings[category][option] = !newSettings[category][option];
+  //     return { serverSettings: newSettings };
+  //   });
+  // }
 
   render() {
     const { server, intl } = this.props;
@@ -142,7 +142,8 @@ class ServerBanner extends PureComponent {
                           type="checkbox"
                           className="side_bar_custom-checkbox"
                           checked={checked}
-                          onChange={() => this.toggleCheckbox(category, option)}
+                          readOnly={true}
+                          // onChange={() => this.toggleCheckbox(category, option)}
                         />
                         <small>{option}</small>
                       </label>
