@@ -99,7 +99,7 @@ class About extends PureComponent {
       serverSettings: {}
     };
   
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    // this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
   
   static propTypes = {
@@ -119,7 +119,7 @@ class About extends PureComponent {
     const { dispatch } = this.props;
     dispatch(fetchServer());
     dispatch(fetchExtendedDescription());
-    axios.get('/user_server_settings/index', {
+    axios.get('/server_settings/index', {
       headers: {
         'Accept': 'application/json',
       }
@@ -132,11 +132,11 @@ class About extends PureComponent {
     });
   }
   
-  handleCheckboxChange = (category, option) => {
-    const updatedSettings = { ...this.state.serverSettings };
-    updatedSettings[category][option] = !updatedSettings[category][option];
-    this.setState({ serverSettings: updatedSettings });
-  };
+  // handleCheckboxChange = (category, option) => {
+  //   const updatedSettings = { ...this.state.serverSettings };
+  //   updatedSettings[category][option] = !updatedSettings[category][option];
+  //   this.setState({ serverSettings: updatedSettings });
+  // };
 
   handleDomainBlocksOpen = () => {
     const { dispatch } = this.props;
@@ -225,7 +225,8 @@ class About extends PureComponent {
                           type="checkbox"
                           className="custom-checkbox"
                           checked={isEnabled}
-                          onChange={() => this.handleCheckboxChange(category, option)}
+                          readOnly={true}
+                          // onChange={() => this.handleCheckboxChange(category, option)}
                         />
                         {option}
                       </label>
