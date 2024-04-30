@@ -63,8 +63,8 @@ class Feed
 
         if keyword_filter.is_filter_hashtag
           keyword = keyword_filter.keyword.downcase
-          status_ids = status.tags.where(name: keyword.gsub('#', '')).ids
-          banned_keyword_status_ids << status_ids if status_ids.present?
+          tag_id = status.tags.where(name: keyword.gsub('#', '')).ids
+          banned_keyword_status_ids << status.id if tag_id.present?
         else
           banned_keyword_status_ids << status.id if status.search_word_ban(keyword_filter.keyword)
         end
