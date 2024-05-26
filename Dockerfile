@@ -163,7 +163,7 @@ RUN \
 # Mount Ruby Gem caches
 --mount=type=cache,id=gem-cache-${TARGETPLATFORM},target=/usr/local/bundle/cache/,sharing=locked \
 # Configure bundle to prevent changes to Gemfile and Gemfile.lock
-  bundle config set --global frozen "true"; \
+  bundle config set --global frozen "false"; \
 # Configure bundle to not cache downloaded Gems
   bundle config set --global cache_all "false"; \
 # Configure bundle to only process production Gems
