@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - demo-of-content-filters-gem
-
+      - gem-demo-staging
 
 env:
   WEB_DEFINITION:
