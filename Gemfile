@@ -207,3 +207,5 @@ gem 'net-http', '~> 0.4.0'
 gem 'rubyzip', '~> 2.3'
 
 gem 'hcaptcha', '~> 7.1'
+
+gem "content_filters", git: "https://github.com/patchwork-hub/content_filters"
