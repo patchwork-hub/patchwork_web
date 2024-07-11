@@ -14,6 +14,14 @@ GIT
     content_filters (0.1.0)
       rails (>= 7.1.3.3)
 
+GIT
+  remote: https://github.com/patchwork-hub/posts
+  revision: 7000c205850d41b14ad83e0fda4ecb0c5e8bc363
+  specs:
+    posts (0.1.0)
+      byebug
+      rails (~> 7.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -163,6 +171,7 @@ GEM
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
+    byebug (11.1.3)
     capybara (3.40.0)
       addressable
       matrix
@@ -909,6 +918,7 @@ DEPENDENCIES
   pg (~> 1.5)
   pghero
   posix-spawn
+  posts!
   premailer-rails
   private_address_check (~> 0.5)
   propshaft
